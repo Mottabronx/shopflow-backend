@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "Chaqueta Oversize Negra",
+    "category": "chaquetas",
+    "price": 89990,
+    "originalPrice": 119990,
+    "description": "Chaqueta oversize de tela premium con acabados minimalistas. Perfecta para looks urbanos y casuales. Tela de alta calidad que mantiene el calor sin perder el estilo.",
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80",
+      "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80"
+    ],
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "colors": ["Negro", "Gris"],
+    "stock": 12,
+    "rating": 4.8,
+    "reviews": 124,
+    "tags": ["nuevo", "destacado"]
+  },
+  {
+    "id": 2,
+    "name": "Polera Básica Blanca",
+    "category": "poleras",
+    "price": 19990,
+    "originalPrice": null,
+    "description": "Polera de algodón 100% peinado, corte relajado y cuello redondo. Esencial en cualquier guardarropa. Disponible en varios colores.",
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80"
+    ],
+    "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+    "colors": ["Blanco", "Negro", "Gris", "Beige"],
+    "stock": 50,
+    "rating": 4.5,
+    "reviews": 89,
+    "tags": ["básico"]
+  },
+  {
+    "id": 3,
+    "name": "Jeans Slim Azul",
+    "category": "pantalones",
+    "price": 49990,
+    "originalPrice": 64990,
+    "description": "Jeans slim fit de denim premium. Corte moderno que se adapta a la figura sin sacrificar comodidad. Con lavado oscuro y detalles cuidados.",
+    "images": [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
+      "https://images.unsplash.com/photo-1604176354204-9268737828e4?w=600&q=80"
+    ],
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Azul oscuro", "Negro"],
+    "stock": 30,
+    "rating": 4.6,
+    "reviews": 201,
+    "tags": ["oferta"]
+  },
+  {
+    "id": 4,
+    "name": "Vestido Midi Floral",
+    "category": "vestidos",
+    "price": 59990,
+    "originalPrice": null,
+    "description": "Vestido midi con estampado floral sutil, tela liviana ideal para primavera-verano. Escote en V y manga corta. Largo hasta la rodilla.",
+    "images": [
+      "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=80",
+      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80"
+    ],
+    "sizes": ["XS", "S", "M", "L"],
+    "colors": ["Floral beige", "Floral azul"],
+    "stock": 18,
+    "rating": 4.9,
+    "reviews": 67,
+    "tags": ["nuevo", "destacado"]
+  },
+  {
+    "id": 5,
+    "name": "Parka Impermeable Kaki",
+    "category": "chaquetas",
+    "price": 129990,
+    "originalPrice": 159990,
+    "description": "Parka técnica impermeable con capucha ajustable, bolsillos laterales y cierre central. Ideal para días de lluvia sin renunciar al estilo.",
+    "images": [
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80",
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Kaki", "Negro", "Verde militar"],
+    "stock": 8,
+    "rating": 4.7,
+    "reviews": 43,
+    "tags": ["oferta", "destacado"]
+  },
+  {
+    "id": 6,
+    "name": "Polera Crop Tie-Dye",
+    "category": "poleras",
+    "price": 24990,
+    "originalPrice": null,
+    "description": "Polera crop con diseño tie-dye único. Cada prenda es irrepetible por el proceso de teñido artesanal. Algodón suave y corte moderno.",
+    "images": [
+      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&q=80",
+      "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=600&q=80"
+    ],
+    "sizes": ["XS", "S", "M", "L"],
+    "colors": ["Multicolor"],
+    "stock": 25,
+    "rating": 4.3,
+    "reviews": 38,
+    "tags": ["nuevo"]
+  },
+  {
+    "id": 7,
+    "name": "Pantalón Cargo Beige",
+    "category": "pantalones",
+    "price": 44990,
+    "originalPrice": null,
+    "description": "Pantalón cargo con múltiples bolsillos laterales, cintura ajustable y corte relajado. Tela resistente ideal para el día a día.",
+    "images": [
+      "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600&q=80",
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&q=80"
+    ],
+    "sizes": ["28", "30", "32", "34", "36", "38"],
+    "colors": ["Beige", "Negro", "Oliva"],
+    "stock": 22,
+    "rating": 4.4,
+    "reviews": 55,
+    "tags": ["básico"]
+  },
+  {
+    "id": 8,
+    "name": "Vestido Negro Elegante",
+    "category": "vestidos",
+    "price": 79990,
+    "originalPrice": 99990,
+    "description": "Vestido negro clásico de largo midi, tela satinada con caída perfecta. Ideal para eventos formales o salidas nocturnas. El clásico que nunca falla.",
+    "images": [
+      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80",
+      "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80"
+    ],
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "colors": ["Negro"],
+    "stock": 15,
+    "rating": 4.9,
+    "reviews": 112,
+    "tags": ["destacado", "oferta"]
+  }
+]
