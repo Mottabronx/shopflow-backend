@@ -11,7 +11,7 @@ const PORT = 3001
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://shopflow-frontend-two.vercel.app/'
+    'https://shopflow-frontend-two.vercel.app'
   ]
 }))
 app.use(express.json())
