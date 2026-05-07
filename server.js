@@ -1,34 +1,32 @@
 import express from 'express'
 import cors from 'cors'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { createClient } from '@supabase/supabase-js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = 3001
 
-app.use(cors({ origin: 'http://localhost:5173' }))
+// ── Supabase ──────────────────────────────────────────────
+const supabase = createClient(
+  'https://jyqswpqmmocwtoysixsa.supabase.co',   // reemplaza con tu Project URL
+  'sb_publishable_FEzFrVb8jeMcHxeE09vwjg_sBda_jm4'    // reemplaza con tu anon public key
+)
+
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://shopflow-frontend-two.vercel.app'
+  ]
+}))
 app.use(express.json())
 
-// ── Helpers ──────────────────────────────────────────────
-
+// ── Helpers productos (siguen en JSON local) ──────────────
 function getProducts() {
   const filePath = join(__dirname, 'data', 'products.json')
   return JSON.parse(readFileSync(filePath, 'utf-8'))
-}
-
-function getOrders() {
-  const filePath = join(__dirname, 'data', 'orders.json')
-  if (!existsSync(filePath)) return []
-  return JSON.parse(readFileSync(filePath, 'utf-8'))
-}
-
-function saveOrder(order) {
-  const filePath = join(__dirname, 'data', 'orders.json')
-  const orders = getOrders()
-  orders.unshift(order) // más reciente primero
-  writeFileSync(filePath, JSON.stringify(orders, null, 2), 'utf-8')
 }
 
 // ── Productos ─────────────────────────────────────────────
@@ -42,7 +40,7 @@ app.get('/api/products', (req, res) => {
   if (maxPrice)  products = products.filter(p => p.price <= Number(maxPrice))
   if (tag)       products = products.filter(p => p.tags.includes(tag))
 
-  if (sort === 'price-asc')  products.sort((a, b) => a.price - b.price)
+  if (sort === 'price-asc')       products.sort((a, b) => a.price - b.price)
   else if (sort === 'price-desc') products.sort((a, b) => b.price - a.price)
   else if (sort === 'rating')     products.sort((a, b) => b.rating - a.rating)
 
@@ -67,23 +65,56 @@ app.get('/api/categories', (req, res) => {
   res.json({ categories })
 })
 
-// ── Pedidos ───────────────────────────────────────────────
+// ── Pedidos con Supabase ──────────────────────────────────
 
-// GET /api/orders — lista todos los pedidos guardados
-app.get('/api/orders', (req, res) => {
-  const orders = getOrders()
+// GET /api/orders — lista todos los pedidos
+app.get('/api/orders', async (req, res) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) return res.status(500).json({ error: error.message })
+
+  // Normalizamos los campos para que el frontend los reciba igual que antes
+  const orders = data.map(o => ({
+    orderId: o.order_id,
+    total: o.total,
+    status: o.status,
+    createdAt: o.created_at,
+    customer: o.customer,
+    payment: o.payment,
+    items: o.items,
+  }))
+
   res.json({ orders, total: orders.length })
 })
 
 // GET /api/orders/:id — un pedido por ID
-app.get('/api/orders/:id', (req, res) => {
-  const order = getOrders().find(o => o.orderId === req.params.id)
-  if (!order) return res.status(404).json({ error: 'Pedido no encontrado' })
-  res.json({ order })
+app.get('/api/orders/:id', async (req, res) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('order_id', req.params.id)
+    .single()
+
+  if (error || !data) return res.status(404).json({ error: 'Pedido no encontrado' })
+
+  res.json({
+    order: {
+      orderId: data.order_id,
+      total: data.total,
+      status: data.status,
+      createdAt: data.created_at,
+      customer: data.customer,
+      payment: data.payment,
+      items: data.items,
+    }
+  })
 })
 
-// POST /api/checkout — procesa y guarda el pedido
-app.post('/api/checkout', (req, res) => {
+// POST /api/checkout — guarda el pedido en Supabase
+app.post('/api/checkout', async (req, res) => {
   const { items, customer, payment } = req.body
 
   if (!items || items.length === 0)
@@ -94,17 +125,19 @@ app.post('/api/checkout', (req, res) => {
   const orderId = `SF-${Date.now()}`
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-  const order = {
-    orderId,
+  const { error } = await supabase.from('orders').insert({
+    order_id: orderId,
     total,
     status: 'completado',
-    createdAt: new Date().toISOString(),
     customer,
     payment: { last4: payment?.last4 || '****' },
     items,
-  }
+  })
 
-  saveOrder(order)
+  if (error) {
+    console.log('Error Supabase:', error)
+    return res.status(500).json({ error: error.message })
+  }
 
   res.json({
     success: true,
