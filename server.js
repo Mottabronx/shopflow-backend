@@ -21,6 +21,12 @@ app.use(cors({
     'https://shopflow-frontend-two.vercel.app'
   ]
 }))
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://shopflow-frontend-two.vercel.app'
+  ]
+}))
 app.use(express.json())
 
 // ── Helpers productos (siguen en JSON local) ──────────────
