@@ -4,32 +4,34 @@ import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { createClient } from '@supabase/supabase-js'
+import 'dotenv/config'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = 3001
 
 // ── Supabase ──────────────────────────────────────────────
+
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+  console.error('❌ Faltan las variables de entorno SUPABASE_URL y SUPABASE_KEY')
+  process.exit(1)
+}
+
 const supabase = createClient(
-  'https://jyqswpqmmocwtoysixsa.supabase.co',   // reemplaza con tu Project URL
-  'sb_publishable_FEzFrVb8jeMcHxeE09vwjg_sBda_jm4'    // reemplaza con tu anon public key
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
 )
 
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://shopflow-frontend-two.vercel.app'
+    process.env.FRONTEND_URL
   ]
 }))
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://shopflow-frontend-two.vercel.app'
-  ]
-}))
+
 app.use(express.json())
 
-// ── Helpers productos (siguen en JSON local) ──────────────
+// ── Helper ──────────────
 function getProducts() {
   const filePath = join(__dirname, 'data', 'products.json')
   return JSON.parse(readFileSync(filePath, 'utf-8'))
@@ -71,9 +73,8 @@ app.get('/api/categories', (req, res) => {
   res.json({ categories })
 })
 
-// ── Pedidos con Supabase ──────────────────────────────────
+// ── Pedidos ──────────────────────────────────
 
-// GET /api/orders — lista todos los pedidos
 app.get('/api/orders', async (req, res) => {
   const { data, error } = await supabase
     .from('orders')
@@ -82,7 +83,6 @@ app.get('/api/orders', async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message })
 
-  // Normalizamos los campos para que el frontend los reciba igual que antes
   const orders = data.map(o => ({
     orderId: o.order_id,
     total: o.total,
@@ -96,7 +96,6 @@ app.get('/api/orders', async (req, res) => {
   res.json({ orders, total: orders.length })
 })
 
-// GET /api/orders/:id — un pedido por ID
 app.get('/api/orders/:id', async (req, res) => {
   const { data, error } = await supabase
     .from('orders')
@@ -119,7 +118,6 @@ app.get('/api/orders/:id', async (req, res) => {
   })
 })
 
-// POST /api/checkout — guarda el pedido en Supabase
 app.post('/api/checkout', async (req, res) => {
   const { items, customer, payment } = req.body
 
